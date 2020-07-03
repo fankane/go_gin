@@ -1,0 +1,5 @@
+初始化 log 写入文件成功, file:/Users/klook/Documents/klook/workspace_hf/go_gin/src/service/fan_go_gin/fan_go.log
+	 %!(EXTRA reflect.Value=0, reflect.StructField={HttpPort  int config:"SYSTEM:port" 0 [0] false}, string=, tag:, reflect.StructTag=config:"SYSTEM:port")
+	 %!(EXTRA reflect.Value=, reflect.StructField={MySQLHost  string config:"DB:mysql.host" 8 [1] false}, string=, tag:, reflect.StructTag=config:"DB:mysql.host")
+http.port:9001
+mysql.host:127.0.0.1:3006

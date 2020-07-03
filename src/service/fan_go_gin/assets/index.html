@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Hello Supplier API</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+    <!-- 备用  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.0/lib/theme-chalk/index.css">
+</head>
+<body>
+
+<div id="app">
+    <el-container style="height: 750px; border: 1px solid #eee">
+        <div id="menuLeft">
+            <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+                <el-menu :default-active="1-1" :default-openeds="['4']" :router="true">
+
+                    <el-menu-item index="0">
+                        <i class="el-icon-s-home"></i>
+                        <span slot="title" onclick="location.reload()">首页</span>
+                    </el-menu-item>
+
+                    <el-submenu index="1">
+                        <template slot="title"><i class="el-icon-message"></i>工单系统</template>
+                        <el-menu-item-group>
+                            <el-menu-item index="1-1"
+                                          onclick="loadhtmlToContainer('/v1/apisupportserv/assets/blockorder/block_submit.html')">
+                                创建工单
+                            </el-menu-item>
+                            <el-menu-item index="1-2"
+                                          onclick="loadhtmlToContainer('/v1/apisupportserv/assets/blockorder/block_list.html')">工单列表
+                            </el-menu-item>
+                            <el-menu-item index="1-3"
+                                          onclick="loadhtmlToContainer('/v1/apisupportserv/assets/blockorder/block_analysis.html')">工单数据
+                            </el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+
+
+                    <el-submenu index="2">
+                        <template slot="title"><i class="el-icon-s-order"></i>SQL</template>
+                        <el-menu-item-group>
+                            <el-menu-item index="2-1"
+                                          onclick="loadhtmlToContainer('/v1/apisupportserv/assets/db/sql_create.html')">
+                                提交SQL
+                            </el-menu-item>
+                            <el-menu-item index="2-2"
+                                          onclick="loadhtmlToContainer('/v1/apisupportserv/assets/db/sql_list.html')">
+                                SQL列表
+                            </el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+
+                    <el-submenu index="3">
+                        <template slot="title"><i class="el-icon-notebook-1"></i>API Version</template>
+                        <el-menu-item-group>
+                            <el-menu-item index="3-1"
+                                          onclick="loadhtmlToContainer('/v1/apisupportserv/assets/deploy/deploy_create.html')">
+                                部署申请
+                            </el-menu-item>
+                            <el-menu-item index="3-2"
+                                          onclick="loadhtmlToContainer('/v1/apisupportserv/assets/deploy/deploy_list.html')">
+                                部署列表
+                            </el-menu-item>
+                            <!-- <el-menu-item index="3-3"
+                                          onclick="loadhtmlToContainer('/v1/apisupportserv/assets/apiversion/apiversion_create.html')">
+                                创建版本
+                            </el-menu-item>
+                            <el-menu-item index="3-4"
+                                          onclick="loadhtmlToContainer('/v1/apisupportserv/assets/apiversion/apiversion_list.html')">
+                                版本列表
+                            </el-menu-item> -->
+                        </el-menu-item-group>
+                    </el-submenu>
+
+                    <!--  <el-submenu index="4">
+                        <template slot="title"><i class="el-icon-notebook-1"></i>工具类</template>
+                        <el-menu-item-group>
+                            <el-menu-item index="4-1"
+                                          onclick="loadhtmlToContainer('/v1/apisupportserv/assets/email/email_create.html')">
+                                邮件发送
+                            </el-menu-item>
+
+                        </el-menu-item-group>
+                    </el-submenu>-->
+                </el-menu>
+            </el-aside>
+        </div>
+        <el-container>
+            <el-header style="text-align: right; font-size: 12px">
+                <div><span style="float:left; font-size: 26px">TTD Supplier API</span></div>
+                <i class="el-icon-user-solid"></i>
+                <span v-model="LoginAccount">{{ LoginAccount }}</span>
+            </el-header>
+
+            <el-main>
+                <div id="main-container">
+                    <div id="cal">
+
+                        <el-form :inline="true" :model="editForm" class="demo-form-inline" label-position="right">
+
+                                <el-form-item label="区域" label-width="60px">
+                                    <el-select
+                                            v-model="form.area"
+                                            filterable
+                                            clearable
+                                            default-first-option
+                                            @change="updateView"
+                                            placeholder="请选择区域">
+                                        <el-option
+                                                v-for="item in areaList"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="selectAreaHoliday">查询</el-button>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-link type="info" target="_blank" href="https://www.officeholidays.com">更多假期</el-link>
+                                </el-form-item>
+                        </el-form>
+
+
+                        <el-calendar v-model="dateValue" first-day-of-week="7">
+                            <template slot="dateCell"
+                                      slot-scope="{ date, data }">
+                                {{ getNowDay(data.day) }}<br />
+                                <span style="font-size: 8px;color: #FF8C52">{{dealMyDate(data.day)}}</span>
+
+                            </template>
+                        </el-calendar>
+                    </div>
+
+                </div>
+                <div id="permission" style="display: none">
+                    <h4>没有权限</h4>
+                    <span>请联系 fan@klook.com 申请权限</span>
+                </div>
+                <div id="error" style="display: none">
+                    <h4>System Error</h4>
+                </div>
+            </el-main>
+        </el-container>
+    </el-container>
+</div>
+
+
+</body>
+
+<!-- import Vue before Element
+<script src="https://unpkg.com/vue/dist/vue.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+
+
+<!-- import JavaScript
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+
+<!-- import JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.0/lib/index.js"></script>
+
+
+
+<script src="/v1/apisupportserv/assets/js/blockorder/block_analysis.js?v=1.0"></script>
+<script src="/v1/apisupportserv/assets/export/jquery/jquery.js"></script>
+<script src="/v1/apisupportserv/assets/js/index.js"></script>
+<script src="/v1/apisupportserv/assets/js/blockorder/block_submit.js?v=1.1"></script>
+<script src="/v1/apisupportserv/assets/js/blockorder/block_list.js?v=1.2"></script>
+<script src="/v1/apisupportserv/assets/js/apiversion/apiversion_create.js?v=1.0"></script>
+<script src="/v1/apisupportserv/assets/js/apiversion/apiversion_list.js?v=1.0"></script>
+<script src="/v1/apisupportserv/assets/js/db/sql_submit.js?v=1.0"></script>
+<script src="/v1/apisupportserv/assets/js/db/sql_list.js?v=1.0"></script>
+<script src="/v1/apisupportserv/assets/js/deploy/deploy_create.js?v=1.0"></script>
+<script src="/v1/apisupportserv/assets/js/deploy/deploy_list.js?v=1.0"></script>
+<script src="/v1/apisupportserv/assets/js/email/email.js?v=1.0"></script>
+
+<script>
+
+    // var baseReqURL = "http://127.0.0.1:10700";
+    var baseReqURL = "https://apiconn-support.dev.klook.io";
+
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                LoginAccount: "",
+            };
+        },
+        data() {
+            return {
+                dateValue: new Date(),
+                resDate: [],
+                areaList:[],
+                form:{
+                    area:""
+                }
+            }
+        },
+        mounted: function () {
+            var self = this;
+            console.log("click select");
+
+            var accountReqURL = baseReqURL + "/v1/apisupportserv/account";
+            console.log("accountReqURL:", accountReqURL);
+            $.get(accountReqURL, function (result) {
+                console.log(result);
+                if (result == "failed") {
+                    self.LoginAccount = "error"
+                    $("#main-container").hide();
+                    $("#menuLeft").hide();
+                    $("#error").show();
+                    return
+                } else if (result == "No") {
+                    self.LoginAccount = "没有权限"
+                    $("#main-container").hide();
+                    $("#menuLeft").hide();
+                    $("#permission").show();
+                    return
+                } else {
+                    self.LoginAccount = result.email;
+                }
+            });
+
+            // 获取日历区域
+            var calReqURL = baseReqURL + "/v1/apisupportserv/calendar/area/list";
+            $.get(calReqURL, function (result) {
+                console.log(result);
+                self.areaList = result;
+            });
+
+            // 获取日历假期信息
+            var calReqURL = baseReqURL + "/v1/apisupportserv/calendar/holiday/list";
+            $.get(calReqURL, function (result) {
+                console.log(result);
+                self.resDate = result;
+            });
+
+
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(this);
+                console.log("key -key path", key, keyPath);
+            },
+            dealMyDate(v) {
+                console.log("date:",v);
+                let len = this.resDate.length;
+                let res = ""
+                for (let i = 0; i < len; i++) {
+                    if (this.resDate[i].date == v) {
+                        let len2 = this.resDate[i].holiday_info.length;
+                        for (let j=0; j<len2;j++) {
+                            if (res !== "") {
+                                res = res + "\r\n"; //暂时没起到换行的作用
+                            }
+                            res = res + this.resDate[i].holiday_info[j].area + " - " + this.resDate[i].holiday_info[j].holiday_name;
+                        }
+                        break
+                    }
+                }
+                console.log("res:", res);
+                return res
+            },
+            getNowDay(v) {
+                console.log("date:",v);
+                var dayArray = v.split('-');
+                return dayArray[2];
+            },
+            selectAreaHoliday() {
+
+                var self = this;
+                var boReq = {
+                    "area": this.form.area,
+                };
+
+                // 获取日历假期信息
+                var calReqURL = baseReqURL + "/v1/apisupportserv/calendar/holiday/list";
+                $.get(calReqURL, boReq, function (result) {
+                    console.log(result);
+                    self.resDate = result;
+                });
+            }
+        }
+    })
+    ;
+</script>
+
+<style>
+    .el-header {
+        background-color: #B3C0D1;
+        color: #333;
+        line-height: 60px;
+    }
+
+    .el-aside {
+        color: #333;
+    }
+</style>
+
+
+</html>
