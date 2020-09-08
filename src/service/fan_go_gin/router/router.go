@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"service/fan_go_gin/controller/inventory"
 	"service/fan_go_gin/controller/user"
 	"time"
 )
@@ -14,7 +15,14 @@ func InitRouter() *gin.Engine {
 	router.Static("/assets", "./assets")
 
 	//router.Handlers
-	router.GET("/v0/user/create", gin.HandlerFunc(func(context *gin.Context) {}))
+	//router.GET("/v1/user/create", gin.HandlerFunc(func(context *gin.Context) {}))
+	//router.GET("/v1/user/create", gin.HandlerFunc(func(context *gin.Context) {}))
+
+	fileR := router.Group("/v1/file")
+	{
+		fileR.Handle(http.MethodPost, "/upload/download/url", HandlerFunc(inventory.UploadCSVFile))
+		fileR.Handle(http.MethodGet, "/upload/download/process", HandlerFunc(inventory.CheckProcess))
+	}
 
 
 	userR := router.Group("/v1/user")

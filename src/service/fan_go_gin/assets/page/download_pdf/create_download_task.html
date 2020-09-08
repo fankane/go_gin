@@ -1,0 +1,30 @@
+<div id="create_download_task">
+
+        <el-upload
+                class="upload-demo"
+                ref="upload"
+                action
+                :http-request="fileUpload"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :on-success="handlerUploadSuccess"
+                :on-error="handlerUploadError"
+                :file-list="fileList"
+                :auto-upload="false">
+            <el-button slot="trigger" :disabled="chooseStatus" size="small" type="primary">选取文件</el-button>
+            <el-button style="margin-left: 10px;" :disabled="uploadStatus"  size="small" type="success" @click="submitUpload">上传&处理</el-button>
+            <div slot="tip" class="el-upload__tip">只能选择 csv 文件</div>
+        </el-upload>
+        <br>
+        <div id="downloadProcess" style="display: none">
+                Total:<el-input v-model="total" size="small" disabled="true" style="width: 100px"
+                          placeholder=""></el-input>
+                Success:<el-input v-model="success" size="small" disabled="true" style="width: 100px"
+                          placeholder=""></el-input>
+                Failed:<el-input v-model="failed" size="small" disabled="true" style="width: 100px"
+                          placeholder=""></el-input>
+            <br /><br />
+            <el-progress type="circle" :percentage="percent" ></el-progress>
+            <el-button size="small" type="primary" @click="checkProcess">刷新进度</el-button>
+        </div>
+</div>

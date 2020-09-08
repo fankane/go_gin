@@ -1,10 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os/exec"
 	"service/fan_go_gin/config"
 	"service/fan_go_gin/router"
 	"service/fan_go_gin/utils/logger"
+	"time"
 )
 
 
@@ -24,7 +27,22 @@ func main() {
 	}
 	router := router.InitRouter()
 
-	router.Run(":9000")
+	go func() {
+		time.Sleep(time.Second * 3)
+		err := openHtml()
+		if err != nil {
+			logger.Error("打开网页失败 err:", err)
+			return
+		}
+	}()
+
+	router.Run(fmt.Sprintf(":%d", config.Conf.HttpPort))
 	logger.Infof("服务启动成功")
 
+}
+
+func openHtml() error {
+
+	cmd := exec.Command("open", "http://localhost:9002/assets/index.html")
+	return cmd.Run()
 }

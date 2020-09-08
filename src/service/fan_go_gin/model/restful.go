@@ -10,3 +10,8 @@ type FErrorMsg struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
+
+const (
+	CodeSystemError = 1001
+	CodeParamsError = 1002
+)

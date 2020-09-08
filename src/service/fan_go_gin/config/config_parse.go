@@ -42,7 +42,10 @@ func ParseConfig(c *goconfig.ConfigFile, config interface{}) error {
 		if err != nil {
 			return fmt.Errorf("getValueFromFile err:%s", err)
 		}
-		setValue(tempElumField, configValue)
+		err = setValue(tempElumField, configValue)
+		if err != nil {
+			return fmt.Errorf("配置赋值失败 err:%s", err)
+		}
 	}
 	return nil
 }
@@ -84,18 +87,20 @@ func getValueFromFile(c *goconfig.ConfigFile, section, key string) (string, erro
 设置 Config的字段具体值
 配置文件里面的值从 string 类型，反射到具体字段类型
  */
-func setValue(rf reflect.Value, value string) {
+func setValue(rf reflect.Value, value string) error {
 	switch rf.Kind() {
 	case reflect.String:
 		rf.SetString(value)
-	case reflect.Int:
+	case reflect.Int, reflect.Int64:
 		intVal, err := strconv.ParseInt(value, 10, 64)
 		if err != nil {
 			logger.Errorf("value:%s, 不是int, 无法赋值给:%s", value, rf.String())
 		}
 		rf.SetInt(intVal)
+	default:
+		return fmt.Errorf("不支持的类型:%s", rf.Kind().String())
 	}
-	return
+	return nil
 }
 
 

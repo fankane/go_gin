@@ -1,6 +1,7 @@
 package config
 
 import (
+	"flag"
 	"github.com/Unknwon/goconfig"
 	"service/fan_go_gin/utils/logger"
 )
@@ -9,9 +10,19 @@ var (
 	Conf = new(Config)
 )
 
+var (
+	configFile string
+)
+
+func init() {
+	flag.StringVar(&configFile, "cf", "./conf.ini", "默认配置文件路径")
+}
+
 // 初始化配置文件
 func InitConfig() error {
-	cf, err := goconfig.LoadConfigFile("/Users/klook/Documents/klook/workspace_hf/go_gin/src/service/fan_go_gin/conf.ini")
+	//confFile := "/Users/klook/Documents/klook/workspace_hf/go_gin/src/service/fan_go_gin/conf.ini"
+	confFile := "./conf.ini"
+	cf, err := goconfig.LoadConfigFile(confFile)
 	if err != nil {
 		return err
 	}
@@ -31,6 +42,7 @@ type Config struct {
 	// 数据库配置
 	MySQLHost string `config:"DB:mysql.host"`
 
+	PdfBasePath string `config:"BUSINESS:download.pdf.basepath"`
 }
 
 func (c *Config) Print() {
