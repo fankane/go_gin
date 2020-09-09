@@ -6,15 +6,18 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/juju/utils/parallel"
 	"io"
 	"mime/multipart"
 	"os"
+	"service/fan_go_gin/config"
 	"service/fan_go_gin/model"
 	"service/fan_go_gin/utils"
 	"service/fan_go_gin/utils/logger"
 	"service/fan_go_gin/utils/pdf"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -99,16 +102,31 @@ func startDownload(ctx context.Context, file string) error {
 		}
 	}
 
+	runNum := config.Conf.DownloadTask
+	if runNum <= 0 {
+		runNum = 5 //默认5个线程
+	}
+	work := parallel.NewRun(runNum)
 	for i, v := range urlList {
 		name := fmt.Sprintf("System-%d.pdf", i+1)
 		pdfT := fmt.Sprintf("%s/%s", downloadPath, name)
-		err = pdf.WkhtmltoPDF(v, pdfT)
-		if err != nil {
-			logger.Errorf("下载失败 err:%s, file:%s, url:%s", err, pdfT, v)
-			failed++
-			continue
-		}
-		success++
+
+		func(reqURL, pdfFile string) {
+			work.Do(func() error {
+				err = pdf.WkhtmltoPDF(reqURL, pdfFile)
+				mux := sync.Mutex{}
+				mux.Lock()
+				defer mux.Unlock()
+				if err != nil {
+					logger.Errorf("下载失败 err:%s, file:%s, url:%s", err, pdfFile, reqURL)
+					failed++
+					return nil
+				}
+				success++
+				return nil
+			})
+		}(v, pdfT)
+
 	}
 
 	return nil

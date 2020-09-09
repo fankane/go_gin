@@ -43,9 +43,12 @@ type Config struct {
 	MySQLHost string `config:"DB:mysql.host"`
 
 	PdfBasePath string `config:"BUSINESS:download.pdf.basepath"`
+	DownloadTask int `config:"BUSINESS:download.task"`
 }
 
 func (c *Config) Print() {
 	logger.Infof("http.port:%d", c.HttpPort)
 	logger.Infof("mysql.host:%s", c.MySQLHost)
+	logger.Infof("download.pdf.basepath:%s", c.PdfBasePath)
+	logger.Infof("download.task:%s", c.DownloadTask)
 }
