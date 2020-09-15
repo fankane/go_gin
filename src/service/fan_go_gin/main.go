@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"go_gin/src/service/fan_go_gin/config"
+	"go_gin/src/service/fan_go_gin/router"
+	"go_gin/src/service/fan_go_gin/utils/logger"
 	"log"
 	"os/exec"
-	"service/fan_go_gin/config"
-	"service/fan_go_gin/router"
-	"service/fan_go_gin/utils/logger"
+
 	"time"
 )
 

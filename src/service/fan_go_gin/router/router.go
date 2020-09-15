@@ -3,9 +3,9 @@ package router
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"go_gin/src/service/fan_go_gin/controller/inventory"
+	"go_gin/src/service/fan_go_gin/controller/user"
 	"net/http"
-	"service/fan_go_gin/controller/inventory"
-	"service/fan_go_gin/controller/user"
 	"time"
 )
 

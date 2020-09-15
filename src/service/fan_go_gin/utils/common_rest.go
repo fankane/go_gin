@@ -2,8 +2,8 @@ package utils
 
 import (
 	"github.com/gin-gonic/gin"
+	"go_gin/src/service/fan_go_gin/model"
 	"net/http"
-	"service/fan_go_gin/model"
 )
 
 func GetRequestID(ctx *gin.Context) string {

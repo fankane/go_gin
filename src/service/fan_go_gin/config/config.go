@@ -3,7 +3,7 @@ package config
 import (
 	"flag"
 	"github.com/Unknwon/goconfig"
-	"service/fan_go_gin/utils/logger"
+	"go_gin/src/service/fan_go_gin/utils/logger"
 )
 
 var (

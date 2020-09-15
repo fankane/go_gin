@@ -2,8 +2,8 @@ package user
 
 import (
 	"github.com/gin-gonic/gin"
-	"service/fan_go_gin/utils"
-	"service/fan_go_gin/utils/logger"
+	"go_gin/src/service/fan_go_gin/utils"
+	"go_gin/src/service/fan_go_gin/utils/logger"
 )
 
 func CreateUser(ctx *gin.Context) {

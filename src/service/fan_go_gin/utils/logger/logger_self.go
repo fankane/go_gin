@@ -9,7 +9,7 @@ import (
 )
 
 var logger *log.Logger
-var logFileBasePath = "/Users/klook/Documents/klook/workspace_hf/go_gin/src/service/fan_go_gin/"
+var logFileBasePath = "./"
 
 func InitLog() error {
 	if logger == nil {
