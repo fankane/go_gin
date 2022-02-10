@@ -89,6 +89,8 @@ func getValueFromFile(c *goconfig.ConfigFile, section, key string) (string, erro
  */
 func setValue(rf reflect.Value, value string) error {
 	switch rf.Kind() {
+	case reflect.Bool:
+		rf.SetBool(getBoolFromStr(value))
 	case reflect.String:
 		rf.SetString(value)
 	case reflect.Int, reflect.Int64:
@@ -103,5 +105,12 @@ func setValue(rf reflect.Value, value string) error {
 	return nil
 }
 
+
+func getBoolFromStr(v string) bool {
+	if strings.ToLower(v) == "true" {
+		return true
+	}
+	return false
+}
 
 

@@ -1,6 +1,6 @@
-var CreateDownloadPDFTask = function () {
+var UploadImg = function () {
     var form = new Vue({
-        el: "#create_download_task",
+        el: "#upload_img",
         data(){
           return {
               fileList:[],
@@ -13,12 +13,12 @@ var CreateDownloadPDFTask = function () {
           }
         },
         methods: {
-            handleRemove(file, fileList) {
+            handleRemove2(file, fileList) {
                 console.log(file, fileList);
                 this.chooseStatus = false;
                 this.uploadStatus = false;
             },
-            handlePreview(file) {
+            handlePreview2(file) {
                 console.log("hufan preview");
                 this.$notify({
                     title: '提示',
@@ -26,11 +26,11 @@ var CreateDownloadPDFTask = function () {
                     type: 'info'
                 });
             },
-            submitUpload() {
+            uploadImg() {
                 this.$refs.upload.submit();
 
             },
-            handlerUploadSuccess(response, file, fileList) {
+            handlerUploadSuccess2(response, file, fileList) {
                 console.log("上传完成,file:", file.name)
                 this.$notify({
                     title: '提示',
@@ -38,7 +38,7 @@ var CreateDownloadPDFTask = function () {
                     type: 'info'
                 });
             },
-            fileUpload(obj){
+            imgFileUpload(obj){
                 console.log("开始上传：file:",obj.file.name);
                 var fd = new FormData();
                 fd.append('file',obj.file);
@@ -46,10 +46,10 @@ var CreateDownloadPDFTask = function () {
                 var fileName = obj.file.name;
                 fileName = fileName.trim();
 
-                if (!fileName.endsWith("csv")) {
+                if (!fileName.endsWith("jpg") && !fileName.endsWith("png")) {
                     this.$notify({
                         title: '提示',
-                        message: '仅支持 csv 格式的文件',
+                        message: '仅支持 jpg/png 格式的文件',
                         type: 'warning'
                     });
                     this.fileList = [];//清空列表
@@ -58,7 +58,7 @@ var CreateDownloadPDFTask = function () {
                 var res = false;
                 var message = "";
                 $.ajax({
-                    url:baseReqURL+"/v1/file/upload/download/url",
+                    url:baseReqURL + "/v1/file/upload/image",
                     type:"post",
                     data:fd,
                     cache: false,
@@ -99,33 +99,7 @@ var CreateDownloadPDFTask = function () {
                 this.fileList = [];//清空列表
                 this.chooseStatus = true;
                 this.uploadStatus = true;
-                $("#downloadProcess").show();
-                this.percent = 1;
             },
-            checkProcess() {
-                var self = this;
-                //检查处理进度
-                var url = baseReqURL + "/v1/file/upload/download/process";
-                $.get(url, function (resp) {
-                    console.log("resp:", resp);
-                    if (resp.success == true) {
-                        console.log("result:", resp.result);
-                        self.percent = resp.result.percent;
-                        self.total = resp.result.total;
-                        self.success = resp.result.success;
-                        self.failed = resp.result.failed;
-                        console.log("temp percent:", self.percent);
-                    } else {
-                        self.$notify({
-                            title: '提示',
-                            message: '查询进度失败',
-                            type: 'error'
-                        });
-                    }
-                });
-                console.log("当前 percent:", self.percent);
-                console.log("当前 this.percent:", this.percent);
-            }
         }
     });
 }

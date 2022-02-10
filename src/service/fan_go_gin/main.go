@@ -29,6 +29,9 @@ func main() {
 	router := router.InitRouter()
 
 	go func() {
+		if !config.Conf.IsLocal {
+			return
+		}
 		time.Sleep(time.Second * 3)
 		err := openHtml()
 		if err != nil {
@@ -43,7 +46,6 @@ func main() {
 }
 
 func openHtml() error {
-
 	cmd := exec.Command("open", "http://localhost:9002/assets/index.html")
 	return cmd.Run()
 }

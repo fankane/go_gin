@@ -1,12 +1,12 @@
 var APP = {
     init: function (config) {
         this.config = config || {
-            webApiBaseURL: "http://127.0.0.1:9002"
+            webApiBaseURL: baseReqURL
             // webApiBaseURL: "https://apiconn-support.dev.klook.io"
         };
         this.config.vueBootstrapMap = {
             '/assets/page/download_pdf/create_download_task.html': CreateDownloadPDFTask,
-
+            '/assets/page/upload_img/upload_img.html': UploadImg,
         };
     },
 }
@@ -26,7 +26,7 @@ function loadhtmlToContainer(html) {
 window.onload = function (en) {
     APP.init({
         debug:true,
-        webApiBaseURL: "http://127.0.0.1:9002"
+        webApiBaseURL: baseReqURL
         // webApiBaseURL: "https://apiconn-support.dev.klook.io"
     });
 }

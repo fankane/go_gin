@@ -3,6 +3,7 @@ package router
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"go_gin/src/service/fan_go_gin/controller/image"
 	"go_gin/src/service/fan_go_gin/controller/inventory"
 	"go_gin/src/service/fan_go_gin/controller/user"
 	"net/http"
@@ -22,6 +23,7 @@ func InitRouter() *gin.Engine {
 	{
 		fileR.Handle(http.MethodPost, "/upload/download/url", HandlerFunc(inventory.UploadCSVFile))
 		fileR.Handle(http.MethodGet, "/upload/download/process", HandlerFunc(inventory.CheckProcess))
+		fileR.Handle(http.MethodPost, "/upload/image", HandlerFunc(image.UploadImage))
 	}
 
 

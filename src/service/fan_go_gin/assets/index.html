@@ -16,7 +16,17 @@
         <div id="menuLeft">
             <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
                 <el-menu :default-active="1-1" :default-openeds="['1']" :router="true">
-
+                    <el-submenu index="1">
+                        <template slot="title"><i class="el-icon-upload"></i>上传&下载</template>
+                        <el-menu-item-group>
+                            <el-menu-item index="1-1"
+                                          onclick="loadhtmlToContainer('/assets/page/upload_img/upload_img.html')">
+                                图片上传
+                            </el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+                </el-menu>
+                <el-menu :default-active="1-2" :default-openeds="['1']" :router="true">
                     <el-submenu index="1">
                         <template slot="title"><i class="el-icon-message"></i>下载PDF</template>
                         <el-menu-item-group>
@@ -24,17 +34,14 @@
                                           onclick="loadhtmlToContainer('/assets/page/download_pdf/create_download_task.html')">
                                 创建任务
                             </el-menu-item>
-
                         </el-menu-item-group>
                     </el-submenu>
-
-
                 </el-menu>
             </el-aside>
         </div>
         <el-container>
             <el-header style="text-align: right; font-size: 12px">
-                <div><span style="float:left; font-size: 26px">Fan Test</span></div>
+                <div><span style="float:left; font-size: 26px">Fan 工具包</span></div>
                 <i class="el-icon-user-solid"></i>
                 <span v-model="LoginAccount">{{ LoginAccount }}</span>
             </el-header>
@@ -71,15 +78,16 @@
 <script src="/assets/js/export/jquery/jquery.js"></script>
 <script src="/assets/js/index.js"></script>
 <script src="/assets/js/page/download_pdf/create_task.js?v=1.0"></script>
+<script src="/assets/js/page/upload_img/upload_img.js?v=1.0"></script>
 
 <script>
 
-    var baseReqURL = "http://127.0.0.1:9002";
+    var baseReqURL = "http://127.0.0.1:9001";
     new Vue({
         el: '#app',
         data: function () {
             return {
-                LoginAccount: "klooker",
+                LoginAccount: "Fan",
             };
         },
     })

@@ -1,0 +1,16 @@
+<div id="upload_img">
+
+        <el-upload
+                class="upload-demo"
+                ref="upload"
+                action
+                :http-request="imgFileUpload"
+                :on-preview="handlePreview2"
+                :on-remove="handleRemove2"
+                :on-success="handlerUploadSuccess2"
+                :on-error="handlerUploadError2"
+                :auto-upload="false">
+            <el-button slot="trigger" :disabled="chooseStatus" size="small" type="primary">选取图片</el-button>
+            <el-button style="margin-left: 10px;" :disabled="uploadStatus"  size="small" type="success" @click="uploadImg">上传图片</el-button>
+        </el-upload>
+</div>

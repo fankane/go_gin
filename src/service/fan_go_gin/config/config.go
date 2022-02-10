@@ -38,11 +38,12 @@ func InitConfig() error {
 type Config struct {
 	// 系统配置
 	HttpPort int `config:"SYSTEM:port"`
-
+	IsLocal bool `config:"SYSTEM:local"`
 	// 数据库配置
 	MySQLHost string `config:"DB:mysql.host"`
 
 	PdfBasePath string `config:"BUSINESS:download.pdf.basepath"`
+	ImagePathPre string `config:"BUSINESS:image.path.pre"`
 	DownloadTask int `config:"BUSINESS:download.task"`
 }
 

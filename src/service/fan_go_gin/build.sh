@@ -1,0 +1,1 @@
+GOOS=linux go build -o ./fan_go_gin
