@@ -24,6 +24,7 @@ func InitRouter() *gin.Engine {
 		fileR.Handle(http.MethodPost, "/upload/download/url", HandlerFunc(inventory.UploadCSVFile))
 		fileR.Handle(http.MethodGet, "/upload/download/process", HandlerFunc(inventory.CheckProcess))
 		fileR.Handle(http.MethodPost, "/upload/image", HandlerFunc(image.UploadImage))
+		fileR.Handle(http.MethodGet, "/get/imageList", HandlerFunc(image.ImgList))
 	}
 
 

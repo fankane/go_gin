@@ -1,14 +1,20 @@
-<div id="upload_img">
-
+<div id="upload_img" style="width: 300px">
+    <div>
+        <el-link href="https://file.hufanfan.cn/" target="_blank" type="primary">文件查看</el-link>
+    </div>
+    <br /><br />
         <el-upload
                 class="upload-demo"
                 ref="upload"
                 action
+                :file-list="fileList"
+                list-type="picture"
                 :http-request="imgFileUpload"
                 :on-preview="handlePreview2"
                 :on-remove="handleRemove2"
                 :on-success="handlerUploadSuccess2"
                 :on-error="handlerUploadError2"
+                :before-upload="beforeAvatarUpload"
                 :auto-upload="false">
             <el-button slot="trigger" :disabled="chooseStatus" size="small" type="primary">选取图片</el-button>
             <el-button style="margin-left: 10px;" :disabled="uploadStatus"  size="small" type="success" @click="uploadImg">上传图片</el-button>

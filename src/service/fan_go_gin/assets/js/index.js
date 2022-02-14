@@ -7,6 +7,7 @@ var APP = {
         this.config.vueBootstrapMap = {
             '/assets/page/download_pdf/create_download_task.html': CreateDownloadPDFTask,
             '/assets/page/upload_img/upload_img.html': UploadImg,
+            '/assets/page/upload_img/img_list.html': ImgList,
         };
     },
 }

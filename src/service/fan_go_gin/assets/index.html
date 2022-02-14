@@ -23,10 +23,14 @@
                                           onclick="loadhtmlToContainer('/assets/page/upload_img/upload_img.html')">
                                 图片上传
                             </el-menu-item>
+                            <el-menu-item index="1-2"
+                                          onclick="loadhtmlToContainer('/assets/page/upload_img/img_list.html')">
+                                图片列表
+                            </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
-                <el-menu :default-active="1-2" :default-openeds="['1']" :router="true">
+                <!--<el-menu :default-active="1-2" :default-openeds="['1']" :router="true">
                     <el-submenu index="1">
                         <template slot="title"><i class="el-icon-message"></i>下载PDF</template>
                         <el-menu-item-group>
@@ -36,7 +40,7 @@
                             </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
-                </el-menu>
+                </el-menu>-->
             </el-aside>
         </div>
         <el-container>
@@ -48,6 +52,18 @@
 
             <el-main>
                 <div id="main-container">
+                    <img src="https://file.hufanfan.cn/bingdundun.gif" alt="">
+                    <img src="https://file.hufanfan.cn/b1.gif" alt="">
+                    <img src="https://file.hufanfan.cn/b10.gif" alt="">
+                    <img src="https://file.hufanfan.cn/b3.gif" alt="">
+                    <img src="https://file.hufanfan.cn/b2.gif" alt="">
+                    <img src="https://file.hufanfan.cn/b4.gif" alt="">
+                    <img src="https://file.hufanfan.cn/b5.gif" alt="">
+                    <img src="https://file.hufanfan.cn/b6.gif" alt="">
+                    <img src="https://file.hufanfan.cn/b7.gif" alt="">
+                    <img src="https://file.hufanfan.cn/b8.gif" alt="">
+                    <img src="https://file.hufanfan.cn/b9.gif" alt="">
+                    <img src="https://file.hufanfan.cn/b11.gif" alt="">
                 </div>
                 <div id="permission" style="display: none">
                     <h4>没有权限</h4>
@@ -79,10 +95,12 @@
 <script src="/assets/js/index.js"></script>
 <script src="/assets/js/page/download_pdf/create_task.js?v=1.0"></script>
 <script src="/assets/js/page/upload_img/upload_img.js?v=1.0"></script>
+<script src="/assets/js/page/upload_img/img_list.js?v=1.0"></script>
 
 <script>
 
     var baseReqURL = "http://127.0.0.1:9001";
+    // var baseReqURL = "https://go.hufanfan.cn";
     new Vue({
         el: '#app',
         data: function () {

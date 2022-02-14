@@ -4,12 +4,8 @@ var UploadImg = function () {
         data(){
           return {
               fileList:[],
-              percent: 0 ,
               chooseStatus:false,
               uploadStatus:false,
-              total:0,
-              success:0,
-              failed:0,
           }
         },
         methods: {
@@ -28,7 +24,6 @@ var UploadImg = function () {
             },
             uploadImg() {
                 this.$refs.upload.submit();
-
             },
             handlerUploadSuccess2(response, file, fileList) {
                 console.log("上传完成,file:", file.name)
@@ -46,7 +41,7 @@ var UploadImg = function () {
                 var fileName = obj.file.name;
                 fileName = fileName.trim();
 
-                if (!fileName.endsWith("jpg") && !fileName.endsWith("png")) {
+                if (!fileName.endsWith("jpg") && !fileName.endsWith("jpeg") &&  !fileName.endsWith("png")) {
                     this.$notify({
                         title: '提示',
                         message: '仅支持 jpg/png 格式的文件',
@@ -73,7 +68,6 @@ var UploadImg = function () {
                             message = data.error.message;
                         }
                         console.log("successres:", res);
-
                     },
                     error:function(e){
                         console.log(e);
@@ -97,9 +91,20 @@ var UploadImg = function () {
                     });
                 }
                 this.fileList = [];//清空列表
-                this.chooseStatus = true;
-                this.uploadStatus = true;
+                this.chooseStatus = false;
+                this.uploadStatus = false;
             },
+            beforeAvatarUpload(file) {
+                const isLt20M = file.size / 1024 / 1024 < 20;
+                if (!isLt20M) {
+                    this.$notify({
+                        title: '错误',
+                        message: '上传头像图片大小不能超过 20MB!',
+                        type: 'error'
+                    });
+                }
+                return isLt20M;
+            }
         }
     });
 }

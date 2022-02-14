@@ -45,6 +45,7 @@ type Config struct {
 	PdfBasePath string `config:"BUSINESS:download.pdf.basepath"`
 	ImagePathPre string `config:"BUSINESS:image.path.pre"`
 	DownloadTask int `config:"BUSINESS:download.task"`
+	FileSysPre string `config:"BUSINESS:fileSysPre"`
 }
 
 func (c *Config) Print() {

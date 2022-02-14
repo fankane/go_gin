@@ -46,6 +46,6 @@ func main() {
 }
 
 func openHtml() error {
-	cmd := exec.Command("open", "http://localhost:9002/assets/index.html")
+	cmd := exec.Command("open", "http://localhost:9001/assets/index.html")
 	return cmd.Run()
 }

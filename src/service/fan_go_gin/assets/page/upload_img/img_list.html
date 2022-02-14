@@ -1,0 +1,57 @@
+<div id="img_list">
+    <div class="demo-image">
+        <template>
+            <el-table
+                    :data="imgInfos"
+                    height="600"
+                    style="width: 100%">
+                <el-table-column
+                        type="index"
+                        width="50">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="文件名"
+                        width="100">
+                </el-table-column>
+
+                <el-table-column label="文件预览">
+                    <template slot-scope="scope">
+                        <el-image
+                                style="width: 100px; height: 100px"
+                                :src="scope.row.url"
+                                :preview-src-list="previewURLs"
+                                :fit="scope.row.fit"></el-image>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="fileSize"
+                        label="图片大小">
+                </el-table-column>
+                <el-table-column
+                        prop="cTime"
+                        label="创建时间">
+                </el-table-column>
+                <el-table-column
+                        label="图片URL">
+                    <template slot-scope="scope">
+                        <a :href="scope.row.url"
+                           target="_blank"
+                           class="buttonText">{{scope.row.url}}</a>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </template>
+        <div class="block">
+            <el-pagination
+                    layout="total, sizes,  prev, pager, next"
+                    :current-page="currentPage"
+                    :page-size="pageSize"
+                    :page-sizes="[10,20,30,40]"
+                    :total="imgTotal"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange">
+            </el-pagination>
+        </div>
+    </div>
+</div>
