@@ -7,11 +7,8 @@ import (
 	"go_gin/src/service/fan_go_gin/utils/logger"
 	"log"
 	"os/exec"
-
 	"time"
 )
-
-
 
 func main() {
 

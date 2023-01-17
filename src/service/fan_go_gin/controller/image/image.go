@@ -3,7 +3,6 @@ package image
 import (
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"go_gin/src/service/fan_go_gin/config"
 	"go_gin/src/service/fan_go_gin/model"
 	"go_gin/src/service/fan_go_gin/utils"
@@ -15,7 +14,10 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 type ImgListInfo struct {
@@ -150,6 +152,8 @@ func getQueryInt(ctx *gin.Context, key string) (int, error) {
 }
 
 var imgFileGlobal = FileGlobal{}
+var imgLock = sync.Mutex{}
+var once = sync.Once{}
 
 type FileGlobal []*ImgInfo
 
@@ -163,10 +167,29 @@ func (g FileGlobal) Swap(i, j int) {
 	g[i], g[j] = g[j], g[i]
 }
 
+
+func TickerFlushImgList() {
+	tk := time.NewTicker(time.Second * time.Duration(config.Conf.FlushSecs))
+	for range tk.C { //每秒读取一次，如果中间有删除或者修改，则能显示出来
+		readDirFileList(config.Conf.ImagePathPre)
+	}
+}
+
+
 func getFileList(path string) (FileGlobal, error) {
+	once.Do(func() {
+		go func() {
+			TickerFlushImgList()
+		}()
+	})
 	if imgFileGlobal.Len() > 0 {
 		return imgFileGlobal, nil
 	}
+	return readDirFileList(path)
+}
+
+
+func readDirFileList(path string) (FileGlobal, error) {
 	logger.Infof("开始读取目录:%s", path)
 	fs, err := ioutil.ReadDir(path)
 	if err != nil {
@@ -194,7 +217,9 @@ func getFileList(path string) (FileGlobal, error) {
 	}
 	sortedFile := FileGlobal(iis)
 	sort.Sort(sortedFile) //按创建时间倒序排序
+	imgLock.Lock()
 	imgFileGlobal = sortedFile
+	imgLock.Unlock()
 	return iis, nil
 }
 

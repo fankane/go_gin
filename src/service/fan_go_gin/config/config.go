@@ -37,15 +37,16 @@ func InitConfig() error {
 
 type Config struct {
 	// 系统配置
-	HttpPort int `config:"SYSTEM:port"`
-	IsLocal bool `config:"SYSTEM:local"`
+	HttpPort int  `config:"SYSTEM:port"`
+	IsLocal  bool `config:"SYSTEM:local"`
 	// 数据库配置
 	MySQLHost string `config:"DB:mysql.host"`
 
-	PdfBasePath string `config:"BUSINESS:download.pdf.basepath"`
+	PdfBasePath  string `config:"BUSINESS:download.pdf.basepath"`
 	ImagePathPre string `config:"BUSINESS:image.path.pre"`
-	DownloadTask int `config:"BUSINESS:download.task"`
-	FileSysPre string `config:"BUSINESS:fileSysPre"`
+	DownloadTask int    `config:"BUSINESS:download.task"`
+	FileSysPre   string `config:"BUSINESS:fileSysPre"`
+	FlushSecs    int    `config:"BUSINESS:flush.secs"` //刷新图片列表秒数
 }
 
 func (c *Config) Print() {
@@ -53,4 +54,5 @@ func (c *Config) Print() {
 	logger.Infof("mysql.host:%s", c.MySQLHost)
 	logger.Infof("download.pdf.basepath:%s", c.PdfBasePath)
 	logger.Infof("download.task:%s", c.DownloadTask)
+	logger.Infof("flush.secs:%d", c.FlushSecs)
 }
